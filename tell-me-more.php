@@ -9,14 +9,14 @@
  * that starts the plugin.
  *
  * @link              https://github.com/OllieJones
- * @since             1.0.0
+ * @since             0.0.1
  * @package           Tell_Me_More
  *
  * @wordpress-plugin
  * Plugin Name:       Tell Me More
  * Plugin URI:        https://github.com/OllieJones/tell-me-more
- * Description:       This is a short description of what the plugin does. It's displayed in the WordPress admin area.
- * Version:           1.0.0
+ * Description:       Use OpenAI.com's natural language processing features to provide more information about posts.
+ * Version:           0.0.1
  * Author:            Oliver Jones
  * Author URI:        https://github.com/OllieJones
  * License:           GPL-2.0+
@@ -27,7 +27,7 @@
 
 // If this file is called directly, abort.
 if ( ! defined( 'WPINC' ) ) {
-	die;
+  die;
 }
 
 /**
@@ -35,15 +35,17 @@ if ( ! defined( 'WPINC' ) ) {
  * Start at version 1.0.0 and use SemVer - https://semver.org
  * Rename this for your plugin and update it as you release new versions.
  */
-define( 'TELL_ME_MORE_VERSION', '1.0.0' );
+const TELL_ME_MORE_VERSION = '1.0.0';
+const TELL_ME_MORE_SLUG    = 'tell_me_more';
+const TELL_ME_MORE_OPTIONS = TELL_ME_MORE_SLUG . '_options';
 
 /**
  * The code that runs during plugin activation.
  * This action is documented in includes/class-tell-me-more-activator.php
  */
 function activate_tell_me_more() {
-	require_once plugin_dir_path( __FILE__ ) . 'includes/class-tell-me-more-activator.php';
-	Tell_Me_More_Activator::activate();
+  require_once plugin_dir_path( __FILE__ ) . 'includes/class-tell-me-more-activator.php';
+  OllieJones\Tell_Me_More_Activator::activate();
 }
 
 /**
@@ -51,8 +53,8 @@ function activate_tell_me_more() {
  * This action is documented in includes/class-tell-me-more-deactivator.php
  */
 function deactivate_tell_me_more() {
-	require_once plugin_dir_path( __FILE__ ) . 'includes/class-tell-me-more-deactivator.php';
-	Tell_Me_More_Deactivator::deactivate();
+  require_once plugin_dir_path( __FILE__ ) . 'includes/class-tell-me-more-deactivator.php';
+  OllieJones\Tell_Me_More_Deactivator::deactivate();
 }
 
 register_activation_hook( __FILE__, 'activate_tell_me_more' );
@@ -62,6 +64,7 @@ register_deactivation_hook( __FILE__, 'deactivate_tell_me_more' );
  * The core plugin class that is used to define internationalization,
  * admin-specific hooks, and public-facing site hooks.
  */
+require_once plugin_dir_path( __FILE__ ) . '/lib/autoload.php';
 require plugin_dir_path( __FILE__ ) . 'includes/class-tell-me-more.php';
 
 /**
@@ -75,8 +78,9 @@ require plugin_dir_path( __FILE__ ) . 'includes/class-tell-me-more.php';
  */
 function run_tell_me_more() {
 
-	$plugin = new Tell_Me_More();
-	$plugin->run();
-
+  require_once plugin_dir_path( __FILE__ ) . '/lib/autoload.php';
+  $plugin = new OllieJones\Tell_Me_More();
+  $plugin->run();
 }
+
 run_tell_me_more();

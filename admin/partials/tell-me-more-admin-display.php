@@ -1,16 +1,27 @@
 <?php
 
 /**
- * Provide a admin area view for the plugin
+ * Provide an admin area view for the plugin
  *
- * This file is used to markup the admin-facing aspects of the plugin.
+ * This file is used to present the admin-facing aspects of the plugin.
  *
  * @link       https://github.com/OllieJones
- * @since      1.0.0
  *
- * @package    Tell_Me_More
- * @subpackage Tell_Me_More/admin/partials
+ * @package    Index_Wp_Users_For_Speed
+ * @subpackage Index_Wp_Users_For_Speed/admin/views
  */
+
+settings_errors( TELL_ME_MORE_SLUG );
 ?>
 
-<!-- This file should primarily consist of HTML with a little bit of PHP. -->
+<div class="wrap index-users">
+    <h2 class="wp-heading-inline"><?php echo get_admin_page_title(); ?></h2>
+    <!--suppress HtmlUnknownTarget -->
+    <form id="tell-me-more-form" method="post" action="options.php">
+      <?php
+      settings_fields( TELL_ME_MORE_SLUG );
+      do_settings_sections( TELL_ME_MORE_SLUG  );
+      submit_button( );
+      ?>
+    </form>
+</div>

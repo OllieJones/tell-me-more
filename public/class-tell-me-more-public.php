@@ -1,5 +1,5 @@
 <?php
-
+namespace OllieJones;
 /**
  * The public-facing functionality of the plugin.
  *

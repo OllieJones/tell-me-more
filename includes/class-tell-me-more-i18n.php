@@ -1,5 +1,6 @@
 <?php
 
+namespace OllieJones;
 /**
  * Define the internationalization functionality
  *

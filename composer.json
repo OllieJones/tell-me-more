@@ -1,0 +1,22 @@
+{
+    "name": "olliejones/tell-me-more",
+    "description": "A WordPress plugin to use OpenAI.com's natural language processing features to provide more information about posts.",
+    "type": "plugin",
+    "require": {
+        "orhanerday/open-ai": "^2.2"
+    },
+    "autoload": {
+        "psr-4": {"OllieJones\\":  "src"}
+    },
+    "config": {
+        "vendor-dir": "lib"
+    },
+
+    "license": "GPL-2.0-or-later",
+    "authors": [
+        {
+            "name": "OllieJones",
+            "email": "olliejones@gmail.com"
+        }
+    ]
+}

@@ -1,5 +1,6 @@
 <?php
 
+namespace OllieJones;
 /**
  * Fired during plugin activation
  *
