@@ -61,7 +61,7 @@ class Tell_Me_More_Admin {
     /* make sure default option is in place, to avoid double sanitize call */
     if ( ! $option || ! is_array( $option ) ) {
       update_option( TELL_ME_MORE_OPTIONS,
-        [ 'OPENAI_API_KEY' => '' ] );
+        [ 'OPENAI_API_KEY' => '' , 'words_in_prompt' => 10, 'max_tokens' => 64] );
     }
     register_setting(
       TELL_ME_MORE_SLUG,
@@ -91,35 +91,92 @@ class Tell_Me_More_Admin {
     add_settings_field(
       'OPENAI_API_KEY',
       __( 'OpenAI API Key', 'tell-me-more' ),
-      [ $this, 'api_key' ],
+      function ($args) {
+        $options    = get_option( TELL_ME_MORE_OPTIONS );
+        $optionName = 'OPENAI_API_KEY';
+        $key        = $options[ $optionName ];
+        $hyperlink = '<a href="https://openai.com/api/" target="_blank">OpenAI.com</a>';
+        $createPrompt = sprintf (
+        /* translators:  1: hyperlink (<a> tag) pointing to OpenAI.com */
+          __('Create an account on %1$s and get your API key. Put it here.', 'tell-me-more' ),
+          $hyperlink
+        );
+        ?>
+          <input type="text"
+                 id="<?php echo $optionName ?>"
+                 name="<?php echo TELL_ME_MORE_OPTIONS ?>[OPENAI_API_KEY]"
+                 placeholder="<?php esc_attr_e( 'API Key', 'tell-me-more' ) ?>"
+                 size="50"
+                 value="<?php echo esc_attr( $key ); ?>"
+          />
+          <p class="description">
+            <?php echo $createPrompt; ?>
+          </p>
+
+        <?php
+
+      },
+      TELL_ME_MORE_SLUG,
+      TELL_ME_MORE_SLUG . '_opts' );
+
+    add_settings_field(
+      'words_in_prompt',
+      __( 'Words in the prompt', 'tell-me-more' ),
+      function ($args) {
+        $options    = get_option( TELL_ME_MORE_OPTIONS );
+        $optionName = 'words_in_prompt';
+        $words_in_prompt = array_key_exists('words_in_prompt', $options) ? $options['words_in_prompt'] : 10;
+
+
+        $hyperlink = '<a href="https://openai.com/api/" target="_blank">OpenAI.com</a>';
+        $createPrompt = sprintf (
+        /* translators:  1: hyperlink (<a> tag) pointing to OpenAI.com */
+          __('Create an account on %1$s and get your API key. Put it here.', 'tell-me-more' ),
+          $hyperlink
+        );
+        ?>
+          <input type="number"
+                 id="<?php echo $optionName ?>"
+                 name="<?php echo TELL_ME_MORE_OPTIONS ?>[words_in_prompt]"
+                 value="<?php echo esc_attr( $words_in_prompt ); ?>"
+          />
+
+        <?php
+
+      },
+      TELL_ME_MORE_SLUG,
+      TELL_ME_MORE_SLUG . '_opts' );
+
+    add_settings_field(
+      'max_tokens',
+      __( 'AI tokens in the response', 'tell-me-more' ),
+      function ($args) {
+        $options    = get_option( TELL_ME_MORE_OPTIONS );
+        $optionName = 'max_tokens';
+        $max_tokens = array_key_exists('max_tokens', $options) ? $options['max_tokens'] : 64;
+
+
+        $hyperlink = '<a href="https://openai.com/api/" target="_blank">OpenAI.com</a>';
+        $createPrompt = sprintf (
+        /* translators:  1: hyperlink (<a> tag) pointing to OpenAI.com */
+          __('Create an account on %1$s and get your API key. Put it here.', 'tell-me-more' ),
+          $hyperlink
+        );
+        ?>
+          <input type="number"
+                 id="<?php echo $optionName ?>"
+                 name="<?php echo TELL_ME_MORE_OPTIONS ?>[max_tokens]"
+                 value="<?php echo esc_attr( $max_tokens ); ?>"
+          />
+
+        <?php
+
+      },
       TELL_ME_MORE_SLUG,
       TELL_ME_MORE_SLUG . '_opts' );
   }
 
-  public function api_key( $args ) {
-    $options    = get_option( TELL_ME_MORE_OPTIONS );
-    $optionName = 'OPENAI_API_KEY';
-    $key        = $options[ $optionName ];
-    $hyperlink = '<a href="https://openai.com/api/" target="_blank">OpenAI.com</a>';
-    $createPrompt = sprintf (
-            /* translators:  1: hyperlink (<a> tag) pointing to OpenAI.com */
-            __('Create an account on %1$s and get your API key. Put it here.', 'tell-me-more' ),
-            $hyperlink
-    );
-    ?>
-      <input type="text"
-             id="<?php echo $optionName ?>"
-             name="<?php echo TELL_ME_MORE_OPTIONS ?>[OPENAI_API_KEY]"
-             placeholder="<?php esc_attr_e( 'API Key', 'tell-me-more' ) ?>"
-             size="50"
-             value="<?php echo esc_attr( $key ); ?>"
-      />
-      <p class="description">
-        <?php echo $createPrompt; ?>
-      </p>
 
-    <?php
-  }
 
   function sanitize_settings( $input ) {
     return $input;
